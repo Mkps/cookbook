@@ -1,0 +1,41 @@
+### Tâches Attendues
+#### 1. Collecte & Ingestion
+- Récupération du HTML, headers, certificat TLS, redirections, SSL.
+
+- Extraction WHOIS : dates clés, registrar, durée de vie du domaine.
+Domain Name: SCORTON.TECH
+Registry Domain ID: D534555168-CNIC
+Registrar WHOIS Server: whois.hostinger.com
+Registrar URL: https://www.hostinger.com/
+Updated Date: 2025-03-18T16:11:20.0Z
+Creation Date: 2025-03-13T16:09:10.0Z
+Registry Expiry Date: 2026-03-13T23:59:59.0Z
+Registrar: HOSTINGER operations, UAB
+Registrar IANA ID: 1636
+Domain Status: clientTransferProhibited https://icann.org/epp#clientTransferProhibited
+Name Server: NS2.DNS-PARKING.COM
+Name Server: NS1.DNS-PARKING.COM
+DNSSEC: unsigned
+Registrar Abuse Contact Email: abuse@hostinger.com
+Registrar Abuse Contact Phone: +370.64503378
+URL of the ICANN Whois Inaccuracy Complaint Form: https://www.icann.org/wicf/
+
+
+#### 2. Analyse & Détection
+- Certificat faible ou expirant  
+Certificat ok
+- Redirection anormale  
+Pas de redirection anormale
+- Taille HTML anormale  
+Taille du html normale pour une application Framer
+- Absence de HTTPS
+http redirect vers https
+- Technologies obsolètes  
+Non
+- Détection de signaux faibles
+Aucun
+
+#### 3. Hypothèses & Interprétation
+- Explication simple : “Ce signal pourrait indiquer X”
+- Analyse contextualisée : impact, sévérité, probabilité
+
