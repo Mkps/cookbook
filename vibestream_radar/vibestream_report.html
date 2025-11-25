@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeStream - Rapport d'Audit</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 10px; text-align: center; }
+        .header h1 { margin: 0; font-size: 2.5em; }
+        .summary { background: white; padding: 30px; margin: 20px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .card { background: #667eea; color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .card .number { font-size: 2.5em; font-weight: bold; }
+        .card .label { font-size: 0.9em; }
+        .section { background: white; padding: 30px; margin: 20px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #1e3c72; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        .signal { background: #f8f9fa; border-left: 5px solid #dc3545; padding: 20px; margin: 15px 0; border-radius: 5px; }
+        .signal.high { border-left-color: #ff6b6b; }
+        .signal.medium { border-left-color: #ffa500; }
+        .signal.low { border-left-color: #28a745; }
+        .signal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .signal-title { font-weight: bold; font-size: 1.1em; color: #1e3c72; }
+        .badge { padding: 5px 15px; border-radius: 20px; font-size: 0.85em; font-weight: bold; color: white; }
+        .badge.critical { background: #dc3545; }
+        .badge.high { background: #ff6b6b; }
+        .badge.medium { background: #ffa500; }
+        .badge.low { background: #28a745; }
+        .detail { margin: 8px 0; }
+        .detail-label { font-weight: 600; color: #1e3c72; }
+        .risk-badge { display: inline-block; padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 1.2em; text-transform: uppercase; }
+        .risk-critical { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 VibeStream</h1>
+        <p>Rapport d'Audit de Sécurité Web</p>
+    </div>
+    
+    <div class="summary">
+        <h2>📊 Résumé Exécutif</h2>
+        <div style="margin: 20px 0;">
+            <strong>URL :</strong> https://scorton.tech<br>
+            <strong>Domaine :</strong> scorton.tech<br>
+            <strong>Date :</strong> 2025-11-25
+        </div>
+        <div class="summary-cards">
+            <div class="card">
+                <div class="number">4</div>
+                <div class="label">Signaux Forts</div>
+            </div>
+            <div class="card">
+                <div class="number">7</div>
+                <div class="label">Signaux Faibles</div>
+            </div>
+            <div class="card">
+                <div class="number">3</div>
+                <div class="label">Anomalies</div>
+            </div>
+            <div class="card">
+                <div class="number">4</div>
+                <div class="label">Hypothèses</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <span class="risk-badge risk-critical">
+                Risque Global: CRITICAL
+            </span>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>🚨 Signaux Forts (Critiques)</h2>
+
+        <div class="signal critical">
+            <div class="signal-header">
+                <span class="signal-title">Ports sensibles exposés publiquement: 22, 3389</span>
+                <span class="badge critical">CRITICAL</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Risque élevé d'attaque par force brute, accès non autorisé
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Restreindre l'accès via firewall/VPN, désactiver si non utilisés
+            </div>
+        </div>
+    
+        <div class="signal high">
+            <div class="signal-header">
+                <span class="signal-title">Content Security Policy (CSP) non configurée</span>
+                <span class="badge high">HIGH</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Vulnérable aux attaques XSS, injection de scripts malveillants
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Implémenter une CSP stricte pour contrôler les sources de contenu
+            </div>
+        </div>
+    
+        <div class="signal high">
+            <div class="signal-header">
+                <span class="signal-title">Données WHOIS introuvables ou masquées</span>
+                <span class="badge high">HIGH</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Impossible de vérifier la légitimité du domaine, âge, propriétaire
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Vérifier l'enregistrement du domaine auprès du registrar
+            </div>
+        </div>
+    
+        <div class="signal high">
+            <div class="signal-header">
+                <span class="signal-title">Score de sécurité global faible: 66.21/100 (risque: medium)</span>
+                <span class="badge high">HIGH</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Vulnérabilités multiples compromettant la sécurité globale
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Audit de sécurité complet requis
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="section">
+        <h2>⚠️ Signaux Faibles</h2>
+
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">Certificat TLS expire dans 78 jours</span>
+                <span class="badge medium">MEDIUM</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Risque d'interruption de service si non renouvelé
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Planifier le renouvellement dans les 30 jours
+            </div>
+        </div>
+    
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">14 ports ouverts détectés (seuil: 5)</span>
+                <span class="badge medium">MEDIUM</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Surface d'attaque élargie
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Audit et fermeture des ports non essentiels
+            </div>
+        </div>
+    
+        <div class="signal low">
+            <div class="signal-header">
+                <span class="signal-title">Ports inhabituels ouverts: 53, 67, 69, 110, 119, 123, 161, 389, 587, 5060</span>
+                <span class="badge low">LOW</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Possibles services non sécurisés ou mal configurés
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Vérifier la nécessité de ces services
+            </div>
+        </div>
+    
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">En-tête X-Frame-Options manquant</span>
+                <span class="badge medium">MEDIUM</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Vulnérable aux attaques par clickjacking
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Ajouter l'en-tête: X-Frame-Options: DENY ou SAMEORIGIN
+            </div>
+        </div>
+    
+        <div class="signal low">
+            <div class="signal-header">
+                <span class="signal-title">En-tête X-XSS-Protection désactivé ou manquant</span>
+                <span class="badge low">LOW</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Protection XSS du navigateur désactivée
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Activer via: X-XSS-Protection: 1; mode=block
+            </div>
+        </div>
+    
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">Âge du domaine inconnu</span>
+                <span class="badge medium">MEDIUM</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Impossible d'évaluer la maturité et la confiance du domaine
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Investigation manuelle du domaine requise
+            </div>
+        </div>
+    
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">DNSSEC non configuré</span>
+                <span class="badge medium">MEDIUM</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Impact:</span> Vulnérable au DNS spoofing et cache poisoning
+            </div>
+            <div class="detail">
+                <span class="detail-label">Remédiation:</span> Activer DNSSEC auprès du registrar pour garantir l'authenticité DNS
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="section">
+        <h2>🔎 Anomalies Détectées</h2>
+
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">Ports administratifs exposés (22, 3389)</span>
+                <span class="badge medium">Probabilité: High</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Catégorie:</span> Network Security
+            </div>
+            <div class="detail">
+                <span class="detail-label">Explication:</span> Un site web standard ne devrait exposer que les ports 80/443
+            </div>
+        </div>
+    
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">En-têtes de sécurité manquants: X-Frame-Options, Content-Security-Policy, X-XSS-Protection</span>
+                <span class="badge medium">Probabilité: High</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Catégorie:</span> HTTP Security
+            </div>
+            <div class="detail">
+                <span class="detail-label">Explication:</span> Configuration incomplète des protections HTTP standard
+            </div>
+        </div>
+    
+        <div class="signal medium">
+            <div class="signal-header">
+                <span class="signal-title">WHOIS inaccessible pour un domaine actif</span>
+                <span class="badge medium">Probabilité: Medium</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Catégorie:</span> Domain Security
+            </div>
+            <div class="detail">
+                <span class="detail-label">Explication:</span> Inhabituels pour un site légitime : protection extrême, erreur d'enregistrement, ou domaine très récent
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="section">
+        <h2>💡 Hypothèses de Risques</h2>
+
+        <div class="signal high">
+            <div class="signal-header">
+                <span class="signal-title">Serveur de développement ou de test exposé en production</span>
+                <span class="badge high">Probabilité: High</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Raisonnement:</span> La présence de ports administratifs (SSH, RDP) suggère une mauvaise séparation dev/prod
+            </div>
+            <div class="detail">
+                <span class="detail-label">Risque:</span> Accès non autorisé, compromission du serveur
+            </div>
+        </div>
+    
+        <div class="signal high">
+            <div class="signal-header">
+                <span class="signal-title">Domaine récemment enregistré ou problème d'enregistrement</span>
+                <span class="badge high">Probabilité: Medium</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Raisonnement:</span> L'absence de données WHOIS est inhabituelle pour un domaine établi
+            </div>
+            <div class="detail">
+                <span class="detail-label">Risque:</span> Domaine potentiellement non légitime, risque de perte du domaine
+            </div>
+        </div>
+    
+        <div class="signal high">
+            <div class="signal-header">
+                <span class="signal-title">Absence de processus de sécurité établi</span>
+                <span class="badge high">Probabilité: High</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Raisonnement:</span> Multiples défauts de sécurité fondamentaux détectés
+            </div>
+            <div class="detail">
+                <span class="detail-label">Risque:</span> Surface d'attaque importante, cible facile pour les attaquants
+            </div>
+        </div>
+    
+        <div class="signal high">
+            <div class="signal-header">
+                <span class="signal-title">Tentative partielle de mise en conformité sécuritaire</span>
+                <span class="badge high">Probabilité: Medium</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Raisonnement:</span> CSP partiellement implémentée suggère une prise de conscience récente
+            </div>
+            <div class="detail">
+                <span class="detail-label">Risque:</span> Protection incomplète, faux sentiment de sécurité
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="section">
+        <h2>📈 Scores Techniques</h2>
+        <div class="summary-cards">
+
+            <div class="card">
+                <div class="number">66.2</div>
+                <div class="label">Score Technique</div>
+            </div>
+        
+            <div class="card">
+                <div class="number">98.9</div>
+                <div class="label">Score ML</div>
+            </div>
+        
+            <div class="card">
+                <div class="number">57.4</div>
+                <div class="label">Score DL</div>
+            </div>
+        
+            <div class="card">
+                <div class="number">78.1</div>
+                <div class="label">Score AI</div>
+            </div>
+        
+            <div class="card">
+                <div class="number">66.2</div>
+                <div class="label">Score Final</div>
+            </div>
+        
+        </div>
+    </div>
+    
+    <div style="text-align: center; padding: 30px; color: #666;">
+        <p>Généré par VibeStream v1.0.0 - Scorton Hackathon Challenge 1</p>
+    </div>
+</body>
+</html>

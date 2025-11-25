@@ -1,0 +1,115 @@
+{
+  "url": "https://scorton.tech",
+  "domain": "scorton.tech",
+  "domain_len": "12",
+  "subdomain_depth": "1",
+  "has_idn": "0",
+  "TLS_strength": "256",
+  "TLS_expiry_days": "78",
+  "cert_self_signed": "0",
+  "cert_cn": "scorton.tech",
+  "san_count": "1",
+  "CSP_completeness": "0.4",
+  "Security_headers_count": "2",
+  "CSRF_protection": "False",
+  "Secure_cookie_flag": "0",
+  "CSP_header": "False",
+  "HSTS_header": "True",
+  "X_Frame_Options": "False",
+  "Nb_ports_open": "14",
+  "GeoIP_risk": "low",
+  "Hosting_type": "cloud",
+  "Blacklist_hits": "0",
+  "Domain_age_days": "None",
+  "WHOIS_privacy": "0",
+  "tech_stack": {
+    "technologies": [
+      {
+        "slug": "framer-sites",
+        "name": "Framer Sites",
+        "confidence": 100
+      },
+      {
+        "slug": "react",
+        "name": "React",
+        "confidence": 100
+      },
+      {
+        "slug": "google-analytics",
+        "name": "Google Analytics",
+        "version": "GA4",
+        "confidence": 100
+      }
+    ]
+  },
+  "ssl": "{'subject': {'CN': 'scorton.tech'}, 'issuer': {'C': 'US', 'O': \"Let's Encrypt\", 'CN': 'E8'}, 'valid_from': 'Nov 10 14:26:04 2025 GMT', 'valid_to': 'Feb 8 14:26:03 2026 GMT'}",
+  "whois": {
+    "error": "No matches found for domain in internic database"
+  },
+  "ports": {
+    "openPorts": [22, 53, 67, 69, 80, 110, 119, 123, 161, 389, 443, 587, 3389, 5060],
+    "failedPorts": [20, 21, 23, 25, 68, 143, 156, 162, 179, 194, 993, 995, 3000, 3306, 5900, 8000, 8080, 8888]
+  },
+  "http_sec": {
+    "strictTransportPolicy": true,
+    "xFrameOptions": false,
+    "xContentTypeOptions": true,
+    "xXSSProtection": false,
+    "contentSecurityPolicy": false
+  },
+  "dnssec": {
+    "DNSKEY": {
+      "isFound": false
+    },
+    "DS": {
+      "isFound": false
+    },
+    "RRSIG": {
+      "isFound": false
+    }
+  },
+  "Trackers": {
+    "Tracker_detected": true,
+    "Trackers_found": ["Google Analytics", "Google Font API"],
+    "Risky_service_detected": false
+  },
+  "score_tech": "66.21",
+  "score_ml": "98.89976382255554",
+  "score_dl": "57.363855838775635",
+  "score_ai": "78.13180983066559",
+  "score_analyser": {
+    "final_score_0_1": 0.6620718084493553,
+    "score_0_100": 66.21,
+    "risk_level": "medium",
+    "categories": [
+      {
+        "key": "network_security",
+        "label": "Network Security",
+        "score01": 0.6148383561643835,
+        "score100": 61.5,
+        "grade": "D"
+      },
+      {
+        "key": "data_protection",
+        "label": "Data Protection",
+        "score01": 0.85,
+        "score100": 85,
+        "grade": "B"
+      },
+      {
+        "key": "access_control",
+        "label": "Access Control",
+        "score01": 0.7875000000000001,
+        "score100": 78.8,
+        "grade": "C"
+      },
+      {
+        "key": "security_awareness",
+        "label": "Security Awareness",
+        "score01": 0.6735530163844426,
+        "score100": 67.4,
+        "grade": "D"
+      }
+    ]
+  }
+}

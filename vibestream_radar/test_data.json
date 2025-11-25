@@ -1,0 +1,43 @@
+[
+{
+"url":"https://scorton.tech",
+"domain":"scorton.tech",
+"cookies":{"skipped":"No cookies"},
+"tech_stack":{
+  "technologies":[
+    {"name":"Framer Sites","description":"Design and prototyping tool","version":null},
+    {"name":"React","description":"JavaScript library for building user interfaces","version":null},
+    {"name":"Google Analytics","description":"Web analytics service","version":"GA4"}
+  ]
+},
+"ssl":"{'subject': {'CN': 'scorton.tech'}, 'issuer': {'C': 'US', 'O': \"Let's Encrypt\", 'CN': 'E8'}, 'valid_from': 'Nov 10 14:26:04 2025 GMT', 'valid_to': 'Feb 8 14:26:03 2026 GMT', 'bits': 256}",
+"whois":{"error":"No matches found for domain in internic database"},
+"ports":{
+  "openPorts":[22,53,67,69,80,110,119,123,161,389,443,587,3389,5060],
+  "failedPorts":[20,21,23,25,68,143,156,162,179,194,993,995,3000,3306,5900,8000,8080,8888]
+},
+"http_sec":{
+  "strictTransportPolicy":true,
+  "xFrameOptions":false,
+  "xContentTypeOptions":true,
+  "xXSSProtection":false,
+  "contentSecurityPolicy":false
+},
+"dnssec":{
+  "DNSKEY":{"isFound":false},
+  "DS":{"isFound":false},
+  "RRSIG":{"isFound":false}
+},
+"security-txt":{"isPresent":false},
+"Trackers":{
+  "Tracker_detected":true,
+  "Trackers_found":["Google Analytics","Google Tag Manager","Google Fonts"]
+},
+"score_ml":"98.89976382255554",
+"score_tech":"66.21",
+"score_analyser":{
+  "score_0_100":66.21,
+  "risk_level":"medium"
+}
+}
+]

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeStream Report - {{ domain }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .header .meta {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .card h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .card .label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .risk-critical { color: #dc3545; }
+        .risk-high { color: #fd7e14; }
+        .risk-medium { color: #ffc107; }
+        .risk-low { color: #28a745; }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        
+        .signal-item {
+            border-left: 4px solid;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .signal-item.critical { border-color: #dc3545; background: #fff5f5; }
+        .signal-item.high { border-color: #fd7e14; background: #fff8f0; }
+        .signal-item.medium { border-color: #ffc107; background: #fffbf0; }
+        .signal-item.low { border-color: #28a745; background: #f0fff4; }
+        
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .signal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .severity-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+        
+        .severity-badge.critical { background: #dc3545; }
+        .severity-badge.high { background: #fd7e14; }
+        .severity-badge.medium { background: #ffc107; color: #333; }
+        .severity-badge.low { background: #28a745; }
+        
+        .signal-description {
+            margin: 1rem 0;
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .signal-impact {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        
+        .signal-impact strong {
+            color: #e74c3c;
+        }
+        
+        .signal-recommendation {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #28a745;
+            margin-top: 1rem;
+        }
+        
+        .signal-recommendation strong {
+            color: #28a745;
+        }
+        
+        .hypothesis-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hypothesis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .hypothesis-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .risk-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .risk-metrics {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        .risk-metric {
+            flex: 1;
+        }
+        
+        .risk-metric-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+        
+        .risk-metric-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .scenario-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .indicators-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .indicators-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .indicators-list li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+        
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .tech-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .tech-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+        
+        .tech-description {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .evidence-box {
+            background: #f1f3f5;
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            overflow-x: auto;
+        }
+        
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 VibeStream Security Report</h1>
+        <div class="subtitle">Analyse de sécurité externe et détection d'anomalies</div>
+        <div class="meta">
+            <strong>{{ domain }}</strong> • Généré le {{ scan_date }} • Scorton Cybersecurity Challenge
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Score de Sécurité</h3>
+                <div class="value" style="color: {% if scores.final >= 70 %}#28a745{% elif scores.final >= 50 %}#ffc107{% else %}#dc3545{% endif %}">
+                    {{ scores.final }}<span style="font-size: 1.5rem;">/100</span>
+                </div>
+                <div class="label">Niveau: {{ scores.risk_level|upper }}</div>
+            </div>
+            
+            <div class="card">
+                <h3>Signaux Détectés</h3>
+                <div class="value">{{ signal_summary.total }}</div>
+                <div class="label">
+                    <span class="risk-critical">{{ signal_summary.by_severity.CRITICAL }} critiques</span> • 
+                    <span class="risk-high">{{ signal_summary.by_severity.HIGH }} élevés</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Hypothèses de Risques</h3>
+                <div class="value">{{ risk_summary.total_hypotheses }}</div>
+                <div class="label">
+                    Impact critique: {{ risk_summary.by_impact.critical }}
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Ports Ouverts</h3>
+                <div class="value">{{ ports_info.open_count }}</div>
+                <div class="label">
+                    {% if ports_info.critical_count > 0 %}
+                    <span class="risk-critical">{{ ports_info.critical_count }} critiques</span>
+                    {% else %}
+                    Standard web
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Signaux Forts -->
+        <div class="section">
+            <h2>🚨 Signaux Forts ({{ signal_summary.strong_signals }})</h2>
+            {% if strong_signals %}
+                {% for signal in strong_signals %}
+                <div class="signal-item {{ signal.severity|lower }}">
+                    <div class="signal-header">
+                        <div class="signal-title">{{ signal.title }}</div>
+                        <span class="severity-badge {{ signal.severity|lower }}">{{ signal.severity }}</span>
+                    </div>
+                    <div class="signal-description">{{ signal.description }}</div>
+                    <div class="signal-impact">
+                        <strong>💥 Impact:</strong><br>
+                        {{ signal.impact|replace('\n', '<br>')|safe }}
+                    </div>
+                    <div class="signal-recommendation">
+                        <strong>✅ Recommandation:</strong><br>
+                        {{ signal.recommendation|replace('\n', '<br>')|safe }}
+                    </div>
+                    {% if signal.evidence %}
+                    <div class="evidence-box">
+                        <strong>Preuve:</strong> <pre>{{ signal.evidence|tojson(indent=2) }}</pre>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #28a745; font-weight: 600;">✅ Aucun signal fort détecté - Bonne configuration de sécurité !</p>
+            {% endif %}
+        </div>
+        
+        <!-- Signaux Faibles -->
+        <div class="section">
+            <h2>⚡ Signaux Faibles ({{ signal_summary.weak_signals }})</h2>
+            {% if weak_signals %}
+                {% for signal in weak_signals %}
+                <div class="signal-item {{ signal.severity|lower }}">
+                    <div class="signal-header">
+                        <div class="signal-title">{{ signal.title }}</div>
+                        <span class="severity-badge {{ signal.severity|lower }}">{{ signal.severity }}</span>
+                    </div>
+                    <div class="signal-description">{{ signal.description }}</div>
+                    <div class="signal-impact">
+                        <strong>💥 Impact:</strong> {{ signal.impact|replace('\n', '<br>')|safe }}
+                    </div>
+                    <div class="signal-recommendation">
+                        <strong>✅ Recommandation:</strong> {{ signal.recommendation|replace('\n', '<br>')|safe }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #28a745;">✅ Aucun signal faible détecté</p>
+            {% endif %}
+        </div>
+        
+        <!-- Hypothèses de Risques -->
+        <div class="section">
+            <h2>🎯 Hypothèses de Risques & Scénarios d'Attaque</h2>
+            {% for hypothesis in hypotheses %}
+            <div class="hypothesis-item">
+                <div class="hypothesis-header">
+                    <div class="hypothesis-title">{{ hypothesis.title }}</div>
+                    <div class="risk-score" style="color: {% if hypothesis.risk_score >= 70 %}#dc3545{% elif hypothesis.risk_score >= 50 %}#fd7e14{% else %}#ffc107{% endif %}">
+                        {{ hypothesis.risk_score }}/100
+                    </div>
+                </div>
+                
+                <div class="risk-metrics">
+                    <div class="risk-metric">
+                        <div class="risk-metric-label">Probabilité</div>
+                        <div class="risk-metric-value" style="color: {% if hypothesis.likelihood == 'high' %}#dc3545{% elif hypothesis.likelihood == 'medium' %}#ffc107{% else %}#28a745{% endif %}">
+                            {{ hypothesis.likelihood|upper }}
+                        </div>
+                    </div>
+                    <div class="risk-metric">
+                        <div class="risk-metric-label">Impact</div>
+                        <div class="risk-metric-value" style="color: {% if hypothesis.impact in ['critical', 'high'] %}#dc3545{% elif hypothesis.impact == 'medium' %}#ffc107{% else %}#28a745{% endif %}">
+                            {{ hypothesis.impact|upper }}
+                        </div>
+                    </div>
+                </div>
+                
+                <p><strong>Description:</strong> {{ hypothesis.description }}</p>
+                
+                <div class="scenario-box">
+                    <strong>📖 Scénario d'attaque:</strong><br>
+                    {{ hypothesis.scenario }}
+                </div>
+                
+                <strong>Indicateurs détectés:</strong>
+                <ul class="indicators-list">
+                    {% for indicator in hypothesis.indicators %}
+                    <li>{{ indicator }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Stack Technologique -->
+        <div class="section">
+            <h2>🔧 Stack Technologique</h2>
+            <div class="tech-stack">
+                {% for tech in technologies %}
+                <div class="tech-item">
+                    <div class="tech-name">{{ tech.name }}</div>
+                    <div class="tech-description">{{ tech.description[:100] }}...</div>
+                    {% if tech.version %}
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #667eea;">
+                        Version: {{ tech.version }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Détails Techniques -->
+        <div class="section">
+            <h2>📊 Détails Techniques</h2>
+            
+            <h3 style="margin-top: 1.5rem;">🔐 Certificat TLS</h3>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                <p><strong>Émetteur:</strong> {{ tls_info.issuer }}</p>
+                <p><strong>Validité:</strong> {{ tls_info.valid_from }} → {{ tls_info.valid_to }}</p>
+                <p><strong>Force de clé:</strong> {{ tls_info.bits }} bits</p>
+            </div>
+            
+            <h3 style="margin-top: 1.5rem;">🌐 Ports Ouverts</h3>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                <p><strong>Ouverts ({{ ports_info.open_count }}):</strong> {{ ports_info.open_list|join(', ') }}</p>
+                {% if ports_info.critical_ports %}
+                <p style="color: #dc3545;"><strong>⚠️ Critiques:</strong> {{ ports_info.critical_ports|join(', ') }}</p>
+                {% endif %}
+            </div>
+            
+            <h3 style="margin-top: 1.5rem;">🛡️ Headers de Sécurité</h3>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                <p>HSTS: {% if security_headers.strictTransportPolicy %}<span style="color: #28a745;">✅ Activé</span>{% else %}<span style="color: #dc3545;">❌ Désactivé</span>{% endif %}</p>
+                <p>CSP: {% if security_headers.contentSecurityPolicy %}<span style="color: #28a745;">✅ Activé</span>{% else %}<span style="color: #dc3545;">❌ Désactivé</span>{% endif %}</p>
+                <p>X-Frame-Options: {% if security_headers.xFrameOptions %}<span style="color: #28a745;">✅ Activé</span>{% else %}<span style="color: #dc3545;">❌ Désactivé</span>{% endif %}</p>
+                <p>X-Content-Type-Options: {% if security_headers.xContentTypeOptions %}<span style="color: #28a745;">✅ Activé</span>{% else %}<span style="color: #dc3545;">❌ Désactivé</span>{% endif %}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>📄 Rapport généré par <strong>VibeStream</strong> - Scorton Cybersecurity Challenge</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Ce rapport est destiné à des fins éducatives et d'amélioration de la sécurité</p>
+    </div>
+</body>
+</html>

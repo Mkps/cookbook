@@ -1,0 +1,182 @@
+{
+  "metadata": {
+    "url": "https://scorton.tech",
+    "domain": "scorton.tech",
+    "scan_date": "2025-11-25T18:10:34.502166",
+    "analyzer_version": "1.0.0"
+  },
+  "summary": {
+    "total_signals_strong": 4,
+    "total_signals_weak": 7,
+    "total_anomalies": 3,
+    "total_hypotheses": 4,
+    "global_risk_level": "CRITICAL"
+  },
+  "signals": {
+    "strong": [
+      {
+        "type": "DANGEROUS_PORTS_EXPOSED",
+        "severity": "CRITICAL",
+        "description": "Ports sensibles exposés publiquement: 22, 3389",
+        "details": {
+          "22": {
+            "name": "SSH",
+            "risk": "Accès shell distant, cible d'attaques brute-force"
+          },
+          "3389": {
+            "name": "RDP",
+            "risk": "Bureau à distance Windows, vulnérabilités connues"
+          }
+        },
+        "impact": "Risque élevé d'attaque par force brute, accès non autorisé",
+        "remediation": "Restreindre l'accès via firewall/VPN, désactiver si non utilisés"
+      },
+      {
+        "type": "MISSING_CSP",
+        "severity": "HIGH",
+        "description": "Content Security Policy (CSP) non configurée",
+        "impact": "Vulnérable aux attaques XSS, injection de scripts malveillants",
+        "remediation": "Implémenter une CSP stricte pour contrôler les sources de contenu"
+      },
+      {
+        "type": "WHOIS_UNAVAILABLE",
+        "severity": "HIGH",
+        "description": "Données WHOIS introuvables ou masquées",
+        "impact": "Impossible de vérifier la légitimité du domaine, âge, propriétaire",
+        "remediation": "Vérifier l'enregistrement du domaine auprès du registrar"
+      },
+      {
+        "type": "LOW_SECURITY_SCORE",
+        "severity": "HIGH",
+        "description": "Score de sécurité global faible: 66.21/100 (risque: medium)",
+        "impact": "Vulnérabilités multiples compromettant la sécurité globale",
+        "remediation": "Audit de sécurité complet requis"
+      }
+    ],
+    "weak": [
+      {
+        "type": "TLS_EXPIRY_WARNING",
+        "severity": "MEDIUM",
+        "description": "Certificat TLS expire dans 78 jours",
+        "impact": "Risque d'interruption de service si non renouvelé",
+        "remediation": "Planifier le renouvellement dans les 30 jours"
+      },
+      {
+        "type": "EXCESSIVE_OPEN_PORTS",
+        "severity": "MEDIUM",
+        "description": "14 ports ouverts détectés (seuil: 5)",
+        "impact": "Surface d'attaque élargie",
+        "remediation": "Audit et fermeture des ports non essentiels"
+      },
+      {
+        "type": "UNUSUAL_PORTS",
+        "severity": "LOW",
+        "description": "Ports inhabituels ouverts: 53, 67, 69, 110, 119, 123, 161, 389, 587, 5060",
+        "impact": "Possibles services non sécurisés ou mal configurés",
+        "remediation": "Vérifier la nécessité de ces services"
+      },
+      {
+        "type": "MISSING_X_FRAME_OPTIONS",
+        "severity": "MEDIUM",
+        "description": "En-tête X-Frame-Options manquant",
+        "impact": "Vulnérable aux attaques par clickjacking",
+        "remediation": "Ajouter l'en-tête: X-Frame-Options: DENY ou SAMEORIGIN"
+      },
+      {
+        "type": "MISSING_XSS_PROTECTION",
+        "severity": "LOW",
+        "description": "En-tête X-XSS-Protection désactivé ou manquant",
+        "impact": "Protection XSS du navigateur désactivée",
+        "remediation": "Activer via: X-XSS-Protection: 1; mode=block"
+      },
+      {
+        "type": "UNKNOWN_DOMAIN_AGE",
+        "severity": "MEDIUM",
+        "description": "Âge du domaine inconnu",
+        "impact": "Impossible d'évaluer la maturité et la confiance du domaine",
+        "remediation": "Investigation manuelle du domaine requise"
+      },
+      {
+        "type": "DNSSEC_NOT_CONFIGURED",
+        "severity": "MEDIUM",
+        "description": "DNSSEC non configuré",
+        "impact": "Vulnérable au DNS spoofing et cache poisoning",
+        "remediation": "Activer DNSSEC auprès du registrar pour garantir l'authenticité DNS"
+      }
+    ]
+  },
+  "anomalies": [
+    {
+      "category": "Network Security",
+      "anomaly": "Ports administratifs exposés (22, 3389)",
+      "likelihood": "High",
+      "explanation": "Un site web standard ne devrait exposer que les ports 80/443"
+    },
+    {
+      "category": "HTTP Security",
+      "anomaly": "En-têtes de sécurité manquants: X-Frame-Options, Content-Security-Policy, X-XSS-Protection",
+      "likelihood": "High",
+      "explanation": "Configuration incomplète des protections HTTP standard"
+    },
+    {
+      "category": "Domain Security",
+      "anomaly": "WHOIS inaccessible pour un domaine actif",
+      "likelihood": "Medium",
+      "explanation": "Inhabituels pour un site légitime : protection extrême, erreur d'enregistrement, ou domaine très récent"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis": "Serveur de développement ou de test exposé en production",
+      "probability": "High",
+      "reasoning": "La présence de ports administratifs (SSH, RDP) suggère une mauvaise séparation dev/prod",
+      "risk": "Accès non autorisé, compromission du serveur",
+      "indicators": [
+        "Ports 22 (SSH) et 3389 (RDP) ouverts publiquement",
+        "Absence de restrictions réseau appropriées",
+        "14 ports ouverts au total (normal: 2 pour un site web)"
+      ]
+    },
+    {
+      "hypothesis": "Domaine récemment enregistré ou problème d'enregistrement",
+      "probability": "Medium",
+      "reasoning": "L'absence de données WHOIS est inhabituelle pour un domaine établi",
+      "risk": "Domaine potentiellement non légitime, risque de perte du domaine",
+      "indicators": [
+        "WHOIS retourne 'No matches found'",
+        "Âge du domaine inconnu",
+        "Impossible de vérifier le propriétaire"
+      ]
+    },
+    {
+      "hypothesis": "Absence de processus de sécurité établi",
+      "probability": "High",
+      "reasoning": "Multiples défauts de sécurité fondamentaux détectés",
+      "risk": "Surface d'attaque importante, cible facile pour les attaquants",
+      "indicators": [
+        "4 signaux critiques détectés",
+        "Absence de headers de sécurité standard",
+        "Configuration réseau non sécurisée",
+        "Score de sécurité global faible"
+      ]
+    },
+    {
+      "hypothesis": "Tentative partielle de mise en conformité sécuritaire",
+      "probability": "Medium",
+      "reasoning": "CSP partiellement implémentée suggère une prise de conscience récente",
+      "risk": "Protection incomplète, faux sentiment de sécurité",
+      "indicators": [
+        "CSP configurée à 40.0% seulement",
+        "Certains headers présents, d'autres manquants",
+        "Configuration probablement copiée sans compréhension complète"
+      ]
+    }
+  ],
+  "raw_scores": {
+    "score_tech": "66.21",
+    "score_ml": "98.89976382255554",
+    "score_dl": "57.363855838775635",
+    "score_ai": "78.13180983066559",
+    "final_score": 66.21
+  }
+}
