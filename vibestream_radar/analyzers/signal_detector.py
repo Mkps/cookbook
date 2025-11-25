@@ -64,8 +64,13 @@ class SignalDetector:
         # Analyse WHOIS
         self._check_whois(self._safe_dict(data.get('whois')))
         
-        # Analyse des ports
-        self._check_ports(self._safe_dict(data.get('ports')))
+        # Analyse des ports - Passer le nombre de ports depuis data principal
+        nb_ports = 0
+        try:
+            nb_ports = int(data.get('Nb_ports_open', 0)) if data.get('Nb_ports_open') else 0
+        except (ValueError, TypeError):
+            pass
+        self._check_ports_count(nb_ports)
         
         # Analyse TLS/SSL
         self._check_tls(self._safe_dict(data.get('ssl')))
@@ -108,8 +113,49 @@ class SignalDetector:
                 category='identity'
             ))
     
+    def _check_ports_count(self, nb_ports: int):
+        """
+        Vérifie le nombre de ports ouverts
+        Note: L'API Scorton ne fournit pas la liste des ports, juste le nombre total
+        """
+        if nb_ports == 0:
+            return
+        
+        # Signal si trop de ports ouverts
+        if nb_ports > THRESHOLDS['max_open_ports']:
+            self.signals.append(Signal(
+                signal_id='too_many_ports',
+                severity='HIGH',
+                title='Nombre élevé de ports ouverts',
+                description=f'{nb_ports} ports détectés ouverts (recommandé: < {THRESHOLDS["max_open_ports"]})',
+                impact='• Surface d\'attaque très large\n'
+                       '• Chaque port ouvert est une porte d\'entrée potentielle\n'
+                       '• Augmente significativement les risques d\'exploitation\n'
+                       '• Peut indiquer une configuration réseau non optimisée',
+                recommendation='1. Identifier tous les services exposés\n'
+                             '2. Appliquer le principe du moindre privilège\n'
+                             '3. Fermer tous les ports non essentiels\n'
+                             '4. Utiliser un firewall pour restreindre l\'accès\n'
+                             '5. Mettre en place un monitoring des ports',
+                evidence={'port_count': nb_ports, 'threshold': THRESHOLDS['max_open_ports']},
+                category='network'
+            ))
+        elif nb_ports > 5:
+            self.signals.append(Signal(
+                signal_id='many_ports_open',
+                severity='MEDIUM',
+                title='Plusieurs ports ouverts détectés',
+                description=f'{nb_ports} ports ouverts (recommandé pour un site web: 2-3 ports)',
+                impact='Surface d\'attaque élargie. Plus de ports ouverts = plus de risques potentiels.',
+                recommendation='Vérifier que tous les ports exposés sont nécessaires et correctement sécurisés',
+                evidence={'port_count': nb_ports},
+                category='network'
+            ))
+    
     def _check_ports(self, ports_data: Dict):
-        """Vérifie les ports ouverts"""
+        """Vérifie les ports ouverts (version originale - obsolète avec l'API Scorton)"""
+        # Cette méthode n'est plus utilisée car l'API Scorton ne fournit pas la liste détaillée
+        # Conservée pour compatibilité avec d'autres sources de données
         open_ports = ports_data.get('openPorts', [])
         
         if not open_ports:

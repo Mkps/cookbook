@@ -78,15 +78,20 @@ class ReportGenerator:
         }
         
         # Informations sur les ports
-        ports_data = data.get('ports', {})
-        open_ports = ports_data.get('openPorts', [])
-        critical_ports = [p for p in open_ports if p in [22, 3389]]
+        # L'API retourne Nb_ports_open comme string, pas un objet ports avec openPorts
+        nb_ports_open = 0
+        if 'Nb_ports_open' in data:
+            try:
+                nb_ports_open = int(data['Nb_ports_open'])
+            except (ValueError, TypeError):
+                nb_ports_open = 0
         
+        # Comme l'API ne donne pas la liste des ports, on indique juste le nombre
         ports_info = {
-            'open_count': len(open_ports),
-            'open_list': open_ports,
-            'critical_ports': critical_ports,
-            'critical_count': len(critical_ports)
+            'open_count': nb_ports_open,
+            'open_list': [],  # L'API ne fournit pas la liste détaillée
+            'critical_ports': [],  # Impossible de savoir sans la liste
+            'critical_count': 0
         }
         
         # Technologies
