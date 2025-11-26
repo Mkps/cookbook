@@ -1,5 +1,5 @@
-Alexis LOUBIERE @aloubier
-Guillaume Perez--Duflo @gperez--
-Colin CAUDERLIER @ccaurerl
-Noah FELTEN @nofelten
-Edouard AUBERT @edaubert
+Alexis LOUBIERE aloubier@student.42.fr
+Guillaume Perez--Duflo gperez--@student.42.fr
+Colin CAUDERLIER ccaurerl@student.42.fr
+Noah FELTEN nofelten@student.42.fr
+Edouard AUBERT edaubert@student.42.fr
